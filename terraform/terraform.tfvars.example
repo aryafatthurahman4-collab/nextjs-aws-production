@@ -1,0 +1,33 @@
+# Terraform Variables Example
+# Copy this file to terraform.tfvars and fill in your values
+
+# AWS Configuration
+aws_region = "ap-southeast-3"
+project_name = "nextjs-aws-production"
+environment = "prod"
+
+# EC2 Configuration
+instance_type = "t3.micro"
+key_name = "your-key-pair-name"  # Leave empty to create new key pair
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC..."  # Your SSH public key
+
+# Domain Configuration
+domain_name = "your-domain.com"
+email = "admin@your-domain.com"
+
+# VPC Configuration
+vpc_cidr = "10.0.0.0/16"
+public_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.11.0/24", "10.0.12.0/24"]
+
+# RDS Configuration
+enable_rds = true
+rds_instance_class = "db.t3.micro"
+rds_allocated_storage = 20
+rds_database_name = "appdb"
+rds_master_username = "appuser"
+rds_master_password = "your-secure-password-here"
+rds_multi_az = false
+
+# Network Configuration
+enable_nat_gateway = false  # Set to true if you need NAT for private subnets
