@@ -20,6 +20,34 @@ env:
   CONTAINER_NAME: nextjs-app
 
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      aws: ${{ steps.check.outputs.aws }}
+      ec2: ${{ steps.check.outputs.ec2 }}
+    steps:
+      - name: Check deployment secrets
+        id: check
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          if [ -n "$AWS_ACCESS_KEY_ID" ] && [ -n "$AWS_SECRET_ACCESS_KEY" ]; then
+            echo "aws=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "aws=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=AWS deploy skipped::AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are not configured."
+          fi
+          if [ -n "$EC2_HOST" ] && [ -n "$EC2_USERNAME" ] && [ -n "$EC2_SSH_KEY" ]; then
+            echo "ec2=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ec2=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=EC2 deploy skipped::EC2_HOST, EC2_USERNAME, and EC2_SSH_KEY are not configured."
+          fi
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -42,9 +70,9 @@ jobs:
         run: npm run build
 
   deploy-ec2:
-    needs: test
+    needs: [test, preflight]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && needs.preflight.outputs.ec2 == 'true'
     
     steps:
       - name: Checkout code
@@ -102,9 +130,10 @@ jobs:
             echo "Deployment successful!"
 
   deploy-ecs:
-    needs: test
+    needs: [test, preflight]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    # ECS is the alternative target; run it manually to avoid deploying twice on every push.
+    if: github.event_name == 'workflow_dispatch' && needs.preflight.outputs.aws == 'true'
     
     steps:
       - name: Checkout code
