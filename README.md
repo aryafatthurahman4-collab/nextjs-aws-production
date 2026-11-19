@@ -1,4 +1,38 @@
 
+<!-- identity-block -->
+<div align="center">
+
+# nextjs-aws-production
+
+<sub>Aplikasi Next.js siap produksi di AWS dengan PostgreSQL, Terraform, dan Docker.</sub>
+
+</div>
+
+## At a glance
+
+| Field | Detail |
+| --- | --- |
+| Repository | nextjs-aws-production |
+| Primary language | TypeScript |
+| Topics | aws, docker, nextjs, nodejs, postgresql, production, terraform, typescript |
+| License | MIT |
+| Branch | main |
+| Maintainer | [@devarent](https://github.com/devarent) |
+
+## Overview
+
+nextjs-aws-production is a hands-on repository focused on: Aplikasi Next.js siap produksi di AWS dengan PostgreSQL, Terraform, dan Docker.. Primary language: TypeScript. Topics: aws, docker, nextjs, nodejs, postgresql, production, terraform, typescript. The README below documents the project; use the table above for a quick overview.
+
+### Global references
+
+<div align="center">
+
+🇮🇸 Iceland &middot; 🇳🇿 New Zealand &middot; 🇨🇭 Switzerland &middot; 🇸🇮 Slovenia &middot; 🇮🇪 Ireland &middot; 🇦🇹 Austria &middot; 🇵🇹 Portugal &middot; 🇸🇬 Singapore &middot; 🇫🇮 Finland
+
+</div>
+
+---
+
 <!-- dbx-style-kit -->
 <div align="center">
 
